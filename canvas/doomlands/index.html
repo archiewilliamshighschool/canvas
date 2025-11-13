@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWHS canvas - Free Games</title>
+
+<script>
+  
+  (function() {
+    const blockedWord = "doomlands";
+    const redirectURL = "https://sites.google.com/view/canvas-announcements/rickroll";
+
+    if (window.location.href.toLowerCase().includes(blockedWord)) {
+      window.location.replace(redirectURL);
+    }
+  })();
+</script>
+
+
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+.game-icon {
+  width: 160px; /* Size of the image */
+  height: 160px;
+  object-fit: contain; /* Keeps image proportions without stretching */
+  border-radius: 12px; /* Rounded corners — optional */
+  margin-bottom: 10px; /* Adds space below the image */
+  transition: transform 0.2s ease, filter 0.2s ease; /* Smooth hover effect */
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)); /* Shadow for depth */
+}
+
+.ad-space {
+  display: none !important;
+}
+
+.icon-button {
+  /* keep normal buttons visible if you have any others */
+}
+
+.icon-button[title="Read Me"], /* hides the book button */
+.icon-button.support {        /* hides the support button */
+  display: none !important;
+}
+
+
+
+body {
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+color: #fff;
+min-height: 100vh;
+}
+
+body.casino-mode {
+background: linear-gradient(135deg, #0a0000 0%, #1a0505 25%, #0d0a1a 50%, #1a0505 75%, #0a0000 100%);
+background-size: 400% 400%;
+animation: casinoGradient 15s ease infinite;
+}
+
+@keyframes casinoGradient {
+0%, 100% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+}
+
+/* Ad Space Placeholder */
+.ad-space {
+max-width: 1400px;
+margin: 2rem auto;
+padding: 0 2rem;
+}
+
+.ad-banner {
+background: rgba(255, 255, 255, 0.05);
+border: 2px dashed rgba(255, 255, 255, 0.2);
+border-radius: 12px;
+padding: 3rem;
+text-align: center;
+color: rgba(255, 255, 255, 0.5);
+font-size: 0.9rem;
+}
+
+/* Hero Section */
+.hero {
+max-width: 1400px;
+margin: 3rem auto 2rem;
+padding: 0 2rem;
+position: relative;
+}
+
+/* Floating Action Buttons */
+.floating-buttons {
+position: fixed;
+top: 2rem;
+right: 2rem;
+display: flex;
+gap: 1rem;
+z-index: 100;
+}
+
+.icon-button {
+width: 50px;
+height: 50px;
+background: rgba(0, 255, 136, 0.2);
+backdrop-filter: blur(10px);
+border: 2px solid rgba(0, 255, 136, 0.4);
+border-radius: 12px;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+transition: all 0.3s;
+text-decoration: none;
+font-size: 1.5rem;
+}
+
+.icon-button:hover {
+background: rgba(0, 255, 136, 0.3);
+border-color: #00ff88;
+transform: translateY(-2px);
+box-shadow: 0 8px 20px rgba(0, 255, 136, 0.3);
+}
+
+.icon-button.support {
+width: auto;
+padding: 0 1.5rem;
+gap: 0.5rem;
+}
+
+.support-text {
+color: #fff;
+font-size: 0.9rem;
+font-weight: 600;
+}
+
+.hero h1 {
+font-size: 3rem;
+margin-bottom: 0.5rem;
+background: linear-gradient(135deg, #fff, #00ff88);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+}
+
+.hero p {
+font-size: 1.2rem;
+color: rgba(255, 255, 255, 0.7);
+margin-bottom: 2rem;
+}
+
+/* Search Bar */
+.search-container {
+max-width: 600px;
+margin-bottom: 3rem;
+}
+
+.search-bar {
+width: 100%;
+padding: 1rem 1.5rem;
+background: rgba(255, 255, 255, 0.1);
+border: 2px solid rgba(255, 255, 255, 0.2);
+border-radius: 12px;
+color: #fff;
+font-size: 1rem;
+transition: all 0.3s;
+}
+
+.search-bar:focus {
+outline: none;
+border-color: #00ff88;
+background: rgba(255, 255, 255, 0.15);
+}
+
+.search-bar::placeholder {
+color: rgba(255, 255, 255, 0.5);
+}
+
+/* Games Container */
+.games-container {
+max-width: 1400px;
+margin: 0 auto;
+padding: 0 2rem 4rem;
+}
+
+.section-header {
+display: flex;
+align-items: center;
+gap: 1rem;
+margin: 3rem 0 1.5rem;
+padding-bottom: 1rem;
+border-bottom: 2px solid rgba(0, 255, 136, 0.3);
+}
+
+.section-header h2 {
+font-size: 1.8rem;
+background: linear-gradient(135deg, #fff, #00ff88);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+}
+
+.section-badge {
+padding: 0.4rem 1rem;
+background: rgba(0, 255, 136, 0.2);
+border-radius: 20px;
+font-size: 0.85rem;
+color: #00ff88;
+font-weight: 600;
+}
+
+.games-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+gap: 1.5rem;
+}
+
+.game-card {
+background: rgba(255, 255, 255, 0.05);
+border-radius: 16px;
+overflow: hidden;
+transition: all 0.3s;
+cursor: pointer;
+border: 2px solid transparent;
+}
+
+.game-card:hover {
+transform: translateY(-8px);
+border-color: #00ff88;
+box-shadow: 0 12px 40px rgba(0, 255, 136, 0.3);
+background: rgba(255, 255, 255, 0.08);
+}
+
+.game-thumbnail {
+width: 100%;
+height: 180px;
+display: flex;
+align-items: center;
+justify-content: center;
+position: relative;
+overflow: hidden;
+font-size: 4rem;
+}
+
+.play-overlay {
+position: absolute;
+inset: 0;
+background: rgba(0, 0, 0, 0.6);
+display: flex;
+align-items: center;
+justify-content: center;
+opacity: 0;
+transition: opacity 0.3s;
+}
+
+.game-card:hover .play-overlay {
+opacity: 1;
+}
+
+.play-button {
+width: 60px;
+height: 60px;
+background: #00ff88;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1.5rem;
+}
+
+.game-info {
+padding: 1.25rem;
+}
+
+.game-title {
+font-size: 1.1rem;
+font-weight: 600;
+margin-bottom: 0.5rem;
+}
+
+.game-category {
+font-size: 0.85rem;
+color: rgba(255, 255, 255, 0.6);
+}
+
+/* Multiplayer Access Button */
+.multiplayer-access {
+max-width: 1400px;
+margin: 3rem auto;
+padding: 0 2rem;
+text-align: center;
+}
+
+.multiplayer-btn {
+display: inline-flex;
+align-items: center;
+gap: 1rem;
+padding: 1.5rem 3rem;
+background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 255, 136, 0.3));
+border: 2px solid #00ff88;
+border-radius: 16px;
+color: #fff;
+font-size: 1.2rem;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.3s;
+text-decoration: none;
+}
+
+.multiplayer-btn:hover {
+background: linear-gradient(135deg, rgba(0, 255, 136, 0.3), rgba(0, 255, 136, 0.4));
+transform: translateY(-4px);
+box-shadow: 0 12px 40px rgba(0, 255, 136, 0.4);
+}
+
+.multiplayer-btn .icon {
+font-size: 2rem;
+}
+
+.multiplayer-btn .text {
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+}
+
+.multiplayer-btn .subtitle {
+font-size: 0.85rem;
+color: rgba(255, 255, 255, 0.7);
+font-weight: 400;
+}
+
+/* Hidden class for page transitions */
+.hidden {
+display: none;
+}
+
+/* Back button */
+.back-button {
+display: inline-flex;
+align-items: center;
+gap: 0.5rem;
+padding: 0.75rem 1.5rem;
+background: rgba(255, 255, 255, 0.1);
+border: 2px solid rgba(255, 255, 255, 0.2);
+border-radius: 12px;
+color: #fff;
+font-size: 1rem;
+cursor: pointer;
+transition: all 0.3s;
+margin-bottom: 2rem;
+border: none;
+}
+
+.back-button:hover {
+background: rgba(255, 255, 255, 0.15);
+border-color: #00ff88;
+transform: translateX(-4px);
+}
+
+/* Footer */
+footer {
+background: rgba(0, 0, 0, 0.4);
+padding: 2rem;
+text-align: center;
+color: rgba(255, 255, 255, 0.6);
+border-top: 2px solid rgba(0, 255, 136, 0.3);
+}
+
+/* Casino Page Specific Styles */
+.casino-hero {
+position: relative;
+overflow: hidden;
+}
+
+.casino-hero::after {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+height: 3px;
+background: linear-gradient(90deg, 
+transparent,
+#ffd700,
+#ff6b35,
+#ffd700,
+transparent
+);
+animation: neonSlide 2s linear infinite;
+}
+
+@keyframes neonSlide {
+0% { transform: translateX(-100%); }
+100% { transform: translateX(100%); }
+}
+
+.casino-hero h1 {
+font-size: 3.5rem;
+text-transform: uppercase;
+letter-spacing: 5px;
+background: linear-gradient(45deg, #ffd700, #ff6b35, #ffd700, #ff6b35, #ffd700);
+background-size: 300% 300%;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+animation: casinoShine 2s ease-in-out infinite;
+filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.8)) 
+drop-shadow(0 0 60px rgba(255, 107, 53, 0.6));
+position: relative;
+z-index: 1;
+}
+
+@keyframes casinoShine {
+0%, 100% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+}
+
+.casino-hero p {
+font-size: 1.4rem;
+color: rgba(255, 215, 0, 0.9);
+filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
+position: relative;
+z-index: 1;
+animation: textPulse 2s ease-in-out infinite;
+}
+
+@keyframes textPulse {
+0%, 100% { opacity: 0.9; }
+50% { opacity: 1; transform: scale(1.02); }
+}
+
+#casinoPage .game-card {
+background: linear-gradient(145deg, rgba(20, 5, 5, 0.8), rgba(10, 5, 15, 0.8));
+border: 2px solid rgba(255, 215, 0, 0.4);
+position: relative;
+overflow: hidden;
+box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+}
+
+#casinoPage .game-card::before {
+content: '';
+position: absolute;
+top: -50%;
+left: -50%;
+width: 200%;
+height: 200%;
+background: linear-gradient(
+45deg,
+transparent,
+rgba(255, 215, 0, 0.15),
+transparent
+);
+animation: cardShine 4s linear infinite;
+}
+
+@keyframes cardShine {
+0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+#casinoPage .game-card:hover {
+transform: translateY(-15px) scale(1.08) rotateZ(2deg);
+border-color: #ffd700;
+box-shadow: 
+0 20px 60px rgba(255, 215, 0, 0.6),
+0 0 40px rgba(255, 107, 53, 0.5),
+0 0 80px rgba(255, 215, 0, 0.3),
+inset 0 0 30px rgba(255, 215, 0, 0.15);
+animation: jackpotGlow 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes jackpotGlow {
+0% { filter: brightness(1) saturate(1); }
+100% { filter: brightness(1.2) saturate(1.3); }
+}
+
+#casinoPage .game-card:hover::after {
+content: '🎰';
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+font-size: 6rem;
+opacity: 0.15;
+animation: spinSlots 1s ease-in-out infinite;
+pointer-events: none;
+}
+
+@keyframes spinSlots {
+0%, 100% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.2); }
+}
+
+#casinoPage .section-header {
+border-bottom: 3px solid rgba(255, 215, 0, 0.5);
+position: relative;
+}
+
+#casinoPage .section-header::after {
+content: '';
+position: absolute;
+bottom: -3px;
+left: 0;
+height: 3px;
+width: 100%;
+background: linear-gradient(90deg, 
+transparent,
+#ffd700,
+#ff6b35,
+#ffd700,
+transparent
+);
+animation: borderShine 2s linear infinite;
+}
+
+@keyframes borderShine {
+0% { transform: translateX(-100%); }
+100% { transform: translateX(100%); }
+}
+
+#casinoPage .section-header h2 {
+background: linear-gradient(135deg, #ffd700, #ff6b35, #ffd700);
+background-size: 200% 200%;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+animation: goldShimmer 3s ease-in-out infinite;
+filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
+}
+
+@keyframes goldShimmer {
+0%, 100% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+}
+
+#casinoPage .section-badge {
+background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(255, 107, 53, 0.3));
+border: 1px solid rgba(255, 215, 0, 0.5);
+color: #ffd700;
+box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+0%, 100% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); }
+50% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.6); }
+}
+
+#casinoPage .search-bar {
+background: rgba(255, 215, 0, 0.08);
+border: 2px solid rgba(255, 215, 0, 0.4);
+box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
+transition: all 0.3s;
+}
+
+#casinoPage .search-bar:focus {
+border-color: #ffd700;
+background: rgba(255, 215, 0, 0.12);
+box-shadow: 0 0 40px rgba(255, 215, 0, 0.4), 0 0 80px rgba(255, 107, 53, 0.2);
+transform: scale(1.02);
+}
+
+.coin {
+position: fixed;
+font-size: 1.5rem;
+opacity: 0.6;
+animation: coinFall 4s linear infinite;
+pointer-events: none;
+z-index: 999;
+}
+
+@keyframes coinFall {
+0% {
+transform: translateY(-100px) rotate(0deg);
+opacity: 0;
+}
+10% {
+opacity: 0.6;
+}
+90% {
+opacity: 0.6;
+}
+100% {
+transform: translateY(100vh) rotate(360deg);
+opacity: 0;
+}
+}
+
+#casinoPage .game-card:hover .game-thumbnail {
+animation: jackpotSpin 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes jackpotSpin {
+0% { transform: scale(1) rotate(0deg); }
+25% { transform: scale(1.15) rotate(-8deg); }
+50% { transform: scale(1.2) rotate(0deg); }
+75% { transform: scale(1.15) rotate(8deg); }
+100% { transform: scale(1) rotate(0deg); }
+}
+
+#casinoPage .game-card:hover .game-thumbnail::before {
+content: '✨';
+position: absolute;
+top: 10%;
+left: 10%;
+font-size: 2rem;
+animation: sparkle1 1s ease-in-out infinite;
+}
+
+#casinoPage .game-card:hover .game-thumbnail::after {
+content: '✨';
+position: absolute;
+bottom: 10%;
+right: 10%;
+font-size: 2rem;
+animation: sparkle2 1s ease-in-out infinite 0.5s;
+}
+
+@keyframes sparkle1 {
+0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+50% { opacity: 1; transform: scale(1.5) rotate(180deg); }
+}
+
+@keyframes sparkle2 {
+0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+50% { opacity: 1; transform: scale(1.5) rotate(-180deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+.hero h1 {
+font-size: 2rem;
+}
+
+.floating-buttons {
+top: 1rem;
+right: 1rem;
+flex-direction: column;
+}
+
+.icon-button.support .support-text {
+display: none;
+}
+
+.icon-button.support {
+width: 50px;
+padding: 0;
+}
+
+.games-grid {
+grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+gap: 1rem;
+}
+
+.section-header h2 {
+font-size: 1.4rem;
+}
+
+.multiplayer-btn {
+padding: 1.25rem 2rem;
+font-size: 1rem;
+}
+
+.multiplayer-btn .icon {
+font-size: 1.5rem;
+}
+}
+</style>
+</head>
+<body>
+<!-- Floating Action Buttons -->
+<div class="floating-buttons">
+<a href="#" class="icon-button" title="Read Me">📖</a>
+<a href="YOUR_GOOGLE_FORM_URL_HERE" target="_blank" class="icon-button support" title="Support">
+<span>💬</span>
+<span class="support-text">Support</span>
+</a>
+</div>
+
+<!-- Main Page -->
+<div id="mainPage">
+<!-- Ad Space -->
+<div class="ad-space">
+<div class="ad-banner">
+728x90 AdSense Banner (Leaderboard Ad)
+</div>
+</div>
+
+<div class="hero">
+<h1>Play Free Games</h1>
+<p>Your favorite unblocked games, all in one place</p>
+<div class="search-container">
+<input type="text" class="search-bar" placeholder="Search for games..." id="searchBar">
+</div>
+</div>
+
+<div class="games-container">
+<!-- Offline Single Player Games Section -->
+<div class="section-header">
+<h2>🎯 Single Player Games</h2>
+<span class="section-badge">UNBLOCKED</span>
+</div>
+<div class="games-grid" id="offlineGamesGrid"></div>
+</div>
+
+<!-- Multiplayer Access Button -->
+<div class="multiplayer-access">
+  <a href="https://sites.google.com/view/awhs-canvas/broken" target="_blank" class="multiplayer-btn" id="multiplayerBtn">
+    <span class="icon">🌐</span>
+    <div class="text">
+      <span>Multiplayer Games</span>
+      <span class="subtitle">Coming Soon</span>
+    </div>
+  </a>
+</div>
+
+
+<!-- Casino Games Access Button -->
+<div class="multiplayer-access">
+<button class="multiplayer-btn" id="casinoBtn" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.3)); border-color: #ef4444;">
+<span class="icon">🎰</span>
+<div class="text">
+<span>Casino Games</span>
+<span class="subtitle">Test your luck and skills</span>
+</div>
+</button>
+</div>
+
+<!-- Bottom Ad Space -->
+<div class="ad-space">
+<div class="ad-banner">
+728x90 AdSense Banner (Bottom Ad)
+</div>
+</div>
+</div>
+
+<!-- Multiplayer Page -->
+<div id="multiplayerPage" class="hidden">
+<!-- Ad Space -->
+<div class="ad-space">
+<div class="ad-banner">
+728x90 AdSense Banner (Leaderboard Ad)
+</div>
+</div>
+
+<div class="hero">
+<button class="back-button" id="backBtn">
+<span>←</span>
+<span>Back to All Games</span>
+</button>
+<h1>🌐 PickZonePro</h1>
+<p>Challenge players from around the world</p>
+<div class="search-container">
+<input type="text" class="search-bar" placeholder="Search multiplayer games..." id="searchBarMultiplayer">
+</div>
+</div>
+
+<div class="games-container">
+<!-- PickZonePro Section -->
+<div class="section-header">
+<h2>🌐 PickZonePro</h2>
+<span class="section-badge">LIVE</span>
+</div>
+<div class="games-grid" id="onlineGamesGrid"></div>
+</div>
+
+<!-- Bottom Ad Space -->
+<div class="ad-space">
+<div class="ad-banner">
+728x90 AdSense Banner (Bottom Ad)
+</div>
+</div>
+</div>
+
+<!-- Casino Page -->
+<div id="casinoPage" class="hidden">
+<!-- Ad Space -->
+<div class="ad-space">
+<div class="ad-banner">
+728x90 AdSense Banner (Leaderboard Ad)
+</div>
+</div>
+
+<div class="hero casino-hero">
+<button class="back-button" id="backBtnCasino">
+<span>←</span>
+<span>Back to All Games</span>
+</button>
+<h1>🎰 CASINO GAMES 🎰</h1>
+<p>💰 High Stakes • Big Wins • Pure Adrenaline 💰</p>
+<div class="search-container">
+<input type="text" class="search-bar" placeholder="🔍 Search casino games..." id="searchBarCasino">
+</div>
+</div>
+
+<div class="games-container">
+<!-- Casino Games Section -->
+<div class="section-header">
+<h2>🎲 CASINO GAMES 🎲</h2>
+<span class="section-badge">🔥 HIGH STAKES 🔥</span>
+</div>
+<div class="games-grid" id="casinoGamesGrid"></div>
+</div>
+
+<!-- Bottom Ad Space -->
+<div class="ad-space">
+<div class="ad-banner">
+728x90 AdSense Banner (Bottom Ad)
+</div>
+</div>
+</div>
+
+<footer>
+<p>&copy; 2025 AWHS canvas. All games are property of their respective owners.</p>
+</footer>
+
+<script>
+const onlineGames = [
+{ title: 'Krunker.io', category: 'FPS Multiplayer', url: 'https://sites.google.com/view/awhs-canvas/canvas32', icon: '🔫', color: '#ef4444' },
+{ title: 'Shell Shockers', category: 'Multiplayer Shooter', url: 'https://sites.google.com/view/awhs-canvas/canvas33', icon: '🥚', color: '#f59e0b' },
+{ title: 'Agar.io', category: 'Multiplayer', url: 'https://sites.google.com/view/awhs-canvas/canvas34', icon: '⚫', color: '#10b981' },
+{ title: 'Slither.io', category: 'Multiplayer', url: 'https://sites.google.com/view/awhs-canvas/canvas', icon: '🐍', color: '#22c55e' },
+{ title: 'Paper.io', category: 'Multiplayer', url: 'https://sites.google.com/view/awhs-canvas/canvas', icon: '📄', color: '#06b6d4' },
+{ title: 'Subway Surfers', category: 'Running', url: 'https://sites.google.com/view/awhs-canvas/canvas18/', icon: '🚇', color: '#10b981' },
+{ title: 'Rooftop Snipers', category: 'Fighting', url: 'https://sites.google.com/view/awhs-canvas/canvas15/', icon: '🎯', color: '#f97316' },
+{ title: 'Getaway Shootout', category: 'Fighting', url: 'https://sites.google.com/view/awhs-canvas/canvas7/', icon: '🚗', color: '#f43f5e' },
+{ title: 'Soccer Random', category: 'Sports', url: 'https://sites.google.com/view/awhs-canvas/canvas26/', icon: '⚽', color: '#10b981' },
+{ title: 'Basket Random', category: 'Sports', url: 'https://sites.google.com/view/awhs-canvas/canvas23/', icon: '🏀', color: '#f97316' },
+{ title: 'Volley Random', category: 'Sports', url: 'https://sites.google.com/view/awhs-canvas/canvas35/', icon: '🏐', color: '#eab308' },
+{ title: 'Boxing Random', category: 'Sports', url: 'https://sites.google.com/view/awhs-canvas/canvas38/', icon: '🥊', color: '#dc2626' },
+];
+
+const offlineGames = [
+{ title: '2048', category: 'Puzzle', url: 'https://sites.google.com/view/awhs-canvas/canvas2/', icon: 'https://imgs.crazygames.com/games/2048/cover_1x1-1707828857318.png?format=auto&quality=70&metadata=none', color: '#f59e0b' },
+{ title: 'Snow Rider', category: 'Racing', url: 'https://sites.google.com/view/awhs-canvas/canvas22/', icon: 'https://geometrydashfullversion.io/data/image/game/snow-rider-3d/snow-rider-3d.jpg', color: '#dc2626' },
+{ title: 'Block Blast', category: 'Puzzle', url: 'https://sites.google.com/view/awhs-canvas/canvas3/', icon: 'https://thehofstrachronicle.com/wp-content/uploads/2025/03/block-blast.png', color: '#8b5cf6' },
+{ title: 'Cluster Rush', category: 'Action', url: 'https://sites.google.com/view/awhs-canvas/canvas4/', icon: 'https://i0.wp.com/diva-magazine.com/wp-content/uploads/2025/10/cluster-rush.png?fit=631%2C631&ssl=1', color: '#ef4444' },
+{ title: 'Drift Hunters', category: 'Racing', url: 'https://sites.google.com/view/awhs-canvas/canvas6/', icon: 'https://m.media-amazon.com/images/I/91SfPYITE-L._h1_.png', color: '#3b82f6' },
+{ title: 'Temple of Boom', category: 'Action', url: 'https://sites.google.com/view/awhs-canvas/Broken/', icon: 'https://play-lh.googleusercontent.com/vPPnIxssWU-51yDOb1Ia9Yn-tpLo_8p5d92x-7CTcbP4C1q_ByQlBOlCESY589c8pA', color: '#dc2626' },
+{ title: 'Tanuki Sunset', category: 'Racing', url: 'https://sites.google.com/view/awhs-canvas/canvas20/', icon: 'https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_1.5/c_scale,w_400/ncom/software/switch/70010000028522/desc/77ee2131a79b218d2760fbf6582eeb12f3313edf431b9983590170312d48585b', color: '#ec4899' },
+{ title: 'Slow Roads', category: 'Driving', url: 'https://sites.google.com/view/awhs-canvas/canvas28/', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTnDX1JNP0aLvyNGtiXM9zHz-tfRwo5Lu82w&s', color: '#06b6d4' },
+{ title: 'Retro Bowl', category: 'Sports', url: 'https://sites.google.com/view/awhs-canvas/canvas14/', icon: 'https://img.poki-cdn.com/cdn-cgi/image/q=78,scq=50,width=204,height=204,fit=cover,f=auto/ee9ca3764ef4289a48a1ebf457ef605441ed1f35a0f2eb12707a70d609e53686/retro-bowl.png', color: '#16a34a' },
+{ title: 'Moto X3M', category: 'Racing', url: 'https://sites.google.com/view/awhs-canvas/canvasmoto', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmMfW-1l54rkN8uZUwSvPAw3rkVZHwi0lRnQ&s', color: '#eab308' },
+{ title: 'Gun Spin', category: 'Action', url: 'https://sites.google.com/view/awhs-canvas/canvas9/', icon: 'https://play-lh.googleusercontent.com/lXNvN8L_MqUddrcaYbPNuoT1danN7YpwIjr2DPKRR8t3AauuHIyjNCpezgahs1a41BU', color: '#64748b' },
+{ title: 'Champion Island', category: 'Adventure', url: 'https://sites.google.com/view/awhs-canvas/canvas8/', icon: 'https://www.gstatic.com/marketing-cms/c2/de/b1ea4f8d4314be89cbd66a6c94d7/4.gif', color: '#14b8a6' },
+{ title: 'Superhot', category: 'Action', url: 'https://piccocool.github.io/canvas/canvas/Canvas19/', icon: 'https://imgs.crazygames.com/auto-covers/time-shooter_1x1?format=auto&quality=70&metadata=none', color: '#ef4444' },
+{ title: 'Cookie Clicker', category: 'Idle', url: 'https://piccocool.github.io/canvas/canvas/Canvas25/', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8LAMx-QZh1PcM8KQ9T45nc4y2kycq14WAfg&s', color: '#d97706' },
+{ title: 'Bitlife', category: 'Simulation', url: 'https://sites.google.com/view/awhs-canvas/canvas24/', icon: 'https://play-lh.googleusercontent.com/fUM-UyywXxjC8soxAZdIlxJrlRRXmql8wkE426SHzft4lJycSKVd2jCYQQX1BEG9Xw', color: '#8b5cf6' },
+{ title: 'Vex', category: 'Platformer', url: 'https://sites.google.com/view/awhscanvas/canvasv', icon: 'https://store-images.s-microsoft.com/image/apps.16029.14622517353732960.576abfa8-e499-4dbe-adc4-750c6ba65c7f.72a18063-f8b6-41b6-a6ca-8d549bd33d53', color: '#06b6d4' },
+{ title: 'Learn to Fly', category: 'Action', url: 'https://sites.google.com/view/awhs-canvas/canvas10/', icon: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/589870/capsule_616x353.jpg?t=1643409029', color: '#3b82f6' },
+{ title: 'Chess', category: 'Strategy', url: 'https://sites.google.com/view/awhs-canvas/canvas30/', icon: 'https://blog.houseofstaunton.com/wp-content/uploads/2024/11/Chess-King-Wear-a-Crown-Pexels-scaled.jpg', color: '#6366f1' },
+{ title: 'Slope', category: 'Racing', url: 'https://sites.google.com/view/awhs-canvas/canvas/', icon: 'https://eaglenewsnetwork.org/wp-content/uploads/2017/12/Screen-Shot-2017-12-16-at-1.12.38-AM.png', color: '#22c55e' },
+{ title: 'Minecraft', category: 'Sandbox', url: 'https://sites.google.com/view/awhs-canvas/canvas32/', icon: 'https://upload.wikimedia.org/wikipedia/en/b/b6/Minecraft_2024_cover_art.png', color: '#16a34a' },
+{ title: 'Geometry Dash', category: 'Rhythm', url: 'https://sites.google.com/view/awhs-canvas/canvas36/', icon: 'https://imgs.crazygames.com/games/geometry-dash-online/cover_1x1-1732744370684.png?format=auto&quality=70&metadata=none', color: '#06b6d4' },
+{ title: 'Crazy Cattle 3D', category: 'Action', url: 'https://sites.google.com/view/awhs-canvas/canvas37/', icon: 'https://speedstarsfree.io/data/image/crazy-cattle-3d.jpg', color: '#a855f7' },
+{ title: 'Drift Boss', category: 'Racing', url: 'https://sites.google.com/view/awhs-canvas/broken/', icon: 'https://m.media-amazon.com/images/I/71Rvyj1gI1L.png', color: '#0891b2' },
+{ title: 'Subway Surfers', category: 'Running', url: 'https://sites.google.com/view/awhs-canvas/canvas18/', icon: 'https://play-lh.googleusercontent.com/2j-z3t20D8yLBLScuzp3sFfLCR40PHmQxdVO-O2JrFtcDA7pmg0ln-MmEDcm7tUsLn4', color: '#10b981' },
+{ title: 'Rooftop Snipers', category: 'Fighting', url: 'https://sites.google.com/view/awhs-canvas/canvas15/', icon: 'https://imgs.crazygames.com/rooftop-snipers_1x1/20250108040441/rooftop-snipers_1x1-cover?format=auto&quality=100&metadata=none&width=1200', color: '#f97316' },
+{ title: 'Getaway Shootout', category: 'Fighting', url: 'https://sites.google.com/view/awhs-canvas/canvas7/', icon: 'https://img.poki-cdn.com/cdn-cgi/image/q=78,scq=50,width=314,height=314,fit=cover,f=auto/7e6806e76a4f8ad5b7a8ab8d1d42a74b/getaway-shootout.png', color: '#f43f5e' },
+{ title: 'Soccer Random', category: 'Sports', url: 'https://sites.google.com/view/awhs-canvas/canvas26/', icon: 'https://play-lh.googleusercontent.com/G1PIlb6HWKSaDre0XpUcmKGps9T4iamsSlwrogB3EJzYv4bz0M2am4D17MtGzndaOOU', color: '#10b981' },
+{ title: 'Basket Random', category: 'Sports', url: 'https://sites.google.com/view/awhs-canvas/canvas23/', icon: 'https://imgs.crazygames.com/basket-random_1x1/20240617090207/basket-random_1x1-cover?format=auto&quality=100&metadata=none&width=1200', color: '#f97316' },
+{ title: 'Volley Random', category: 'Sports', url: 'https://sites.google.com/view/awhs-canvas/canvas35/', icon: 'https://play-lh.googleusercontent.com/VeKAevaOjPlcyCtOpFY1h6SjwEjnu4ryG3xQ_qw1Muuhrg8pqwhl1aPjWovMkjc0Rc4', color: '#eab308' },
+{ title: 'Boxing Random', category: 'Sports', url: 'https://sites.google.com/view/awhs-canvas/canvas38/', icon: 'https://imgs.crazygames.com/auto-covers/boxing-random_1x1.jpeg?format=auto&quality=100&metadata=none&width=1200', color: '#dc2626' },
+{ title: 'Among Us', category: 'Sandbox', url: 'https://sites.google.com/view/awhs-canvas/canvas46/', icon: 'https://m.media-amazon.com/images/M/MV5BODI3ODMyZTgtZDdjYS00ZGRlLTg5YjMtNDY2ZjZlODg2NzYyXkEyXkFqcGc@._V1_.jpg', color: '#dc2626' },
+{ title: 'Tetris', category: 'Puzzle', url: 'https://sites.google.com/view/awhs-canvas/canvas52/', icon: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fplay-lh.googleusercontent.com%2F7Zn2QBzByBf4XyQPhuRVsOkSaKSYsty1ka-6_bh6Ub-2kQri6xqqRdK52qxEM69N6cw&f=1&nofb=1&ipt=3ff6644608296046df0398799250fb10c76f1225f59d049db288776232e9bc9b', color: '#dc2626' },
+
+
+];
+
+// Casino Games
+const casinoGames = [
+{ title: 'Plinko', category: 'Luck Game', icon: 'https://mediumrare.imgix.net/5cbb2498c956527e6584c6af216489b85bbb7a909c7d3c4e131a3be9bd1cc6bf', color: '#ef4444', url: 'https://sites.google.com/view/awhs-canvas/canvas44/' },
+{ title: 'Blastoff', category: 'Multiplier', icon: 'https://ntlgaming.com/wp-content/uploads/2025/05/square_blastoff-400x400.jpg', color: '#f97316', url: 'https://sites.google.com/view/awhs-canvas/canvas45/' },
+{ title: 'Tower', category: 'Strategy', icon: 'https://static.templodeslots.es/pict/555002/Tower.png?timestamp=1693811433000&imageDataId=599466&width=320&height=247', color: '#eab308', url: 'https://sites.google.com/view/awhs-canvas/canvas47/' },
+{ title: 'Mines', category: 'Risk Game', icon: 'https://storage.googleapis.com/kickthe/assets/images/games/mines-hacksawgaming/gb/gbp/tile_large.jpg', color: '#dc2626', url: 'https://sites.google.com/view/awhs-canvas/canvas48/' },
+{ title: 'Keno', category: 'Risk Game', icon: 'https://play-lh.googleusercontent.com/N4wmqXoa1smDCr8Iuc8SdZXJL7N3HJQbbB2bHe-DM4HGjMXX6fHnkJ6htuQAiOQRvQIy', color: '#dc2626', url: 'https://sites.google.com/view/awhs-canvas/canvas49/' },
+{ title: 'Blackjack', category: 'Risk Game', icon: 'https://arenacloud.cdn.arkadiumhosted.com/arenaxstorage-blob/arenax-games/BlackJack/0.62/build/resources/assets/thumbs/thumb2x.jpg', color: '#dc2626', url: 'https://sites.google.com/view/awhs-canvas/canvas50/' },
+{ title: 'Craps', category: 'Luck Game', icon: 'https://play-lh.googleusercontent.com/Y7xzS-pLALhgbOBYTrjxLSebNsbsQ-htfFgZ5W4mew98zmeg-SEB948j_NdvBXZ6xxg', color: '#dc2626', url: 'https://sites.google.com/view/awhs-canvas/canvas53/' },
+{ title: 'Slots', category: 'Luck Game', icon: 'https://cdn-icons-png.flaticon.com/512/8616/8616976.png', color: '#dc2626', url: 'https://sites.google.com/view/awhs-canvas/canvas54/' },
+{ title: 'Roulette', category: 'Luck Game', icon: 'https://cdn-icons-png.flaticon.com/512/3425/3425938.png', color: '#dc2626', url: 'https://sites.google.com/view/awhs-canvas/broken/' },
+
+];
+
+const onlineGamesGrid = document.getElementById('onlineGamesGrid');
+const offlineGamesGrid = document.getElementById('offlineGamesGrid');
+const casinoGamesGrid = document.getElementById('casinoGamesGrid');
+const searchBar = document.getElementById('searchBar');
+const searchBarMultiplayer = document.getElementById('searchBarMultiplayer');
+const searchBarCasino = document.getElementById('searchBarCasino');
+const multiplayerBtn = document.getElementById('multiplayerBtn');
+const casinoBtn = document.getElementById('casinoBtn');
+const backBtn = document.getElementById('backBtn');
+const backBtnCasino = document.getElementById('backBtnCasino');
+const mainPage = document.getElementById('mainPage');
+const multiplayerPage = document.getElementById('multiplayerPage');
+const casinoPage = document.getElementById('casinoPage');
+
+function renderGames(gamesToRender, gridElement, isCasino = false) {
+gridElement.innerHTML = '';
+gamesToRender.forEach(game => {
+const gameCard = document.createElement('div');
+gameCard.className = 'game-card';
+gameCard.innerHTML = `
+  <div class="game-thumbnail" style="background: linear-gradient(135deg, ${game.color}dd, ${game.color}99);">
+    <img src="${game.icon}" alt="${game.title}" class="game-icon">
+    <div class="play-overlay">
+      <div class="play-button">▶</div>
+    </div>
+  </div>
+  <div class="game-info">
+    <div class="game-title">${game.title}</div>
+    <div class="game-category">${game.category}</div>
+  </div>
+`;
+
+
+gameCard.addEventListener('click', () => {
+  window.open(game.url, '_blank');
+});
+
+gridElement.appendChild(gameCard);
+});
+}
+
+// Main page search
+searchBar.addEventListener('input', (e) => {
+const searchTerm = e.target.value.toLowerCase();
+const filteredOffline = offlineGames.filter(game =>
+game.title.toLowerCase().includes(searchTerm) ||
+game.category.toLowerCase().includes(searchTerm)
+);
+renderGames(filteredOffline, offlineGamesGrid);
+});
+
+// Multiplayer page search
+searchBarMultiplayer.addEventListener('input', (e) => {
+const searchTerm = e.target.value.toLowerCase();
+const filteredOnline = onlineGames.filter(game =>
+game.title.toLowerCase().includes(searchTerm) ||
+game.category.toLowerCase().includes(searchTerm)
+);
+renderGames(filteredOnline, onlineGamesGrid);
+});
+
+// Casino page search
+searchBarCasino.addEventListener('input', (e) => {
+const searchTerm = e.target.value.toLowerCase();
+const filteredCasino = casinoGames.filter(game =>
+game.title.toLowerCase().includes(searchTerm) ||
+game.category.toLowerCase().includes(searchTerm)
+);
+renderGames(filteredCasino, casinoGamesGrid, true);
+});
+
+// Create coin rain effect for casino page
+function createCoinRain() {
+const coins = ['💰', '🪙', '💎', '💵', '🎰'];
+const interval = setInterval(() => {
+if (!document.body.classList.contains('casino-mode')) {
+clearInterval(interval);
+return;
+}
+
+const coin = document.createElement('div');
+coin.className = 'coin';
+coin.textContent = coins[Math.floor(Math.random() * coins.length)];
+coin.style.left = Math.random() * 100 + '%';
+coin.style.animationDuration = (Math.random() * 2 + 3) + 's';
+coin.style.animationDelay = Math.random() * 2 + 's';
+document.body.appendChild(coin);
+
+setTimeout(() => coin.remove(), 6000);
+}, 800);
+}
+
+// Page navigation
+
+casinoBtn.addEventListener('click', () => {
+mainPage.classList.add('hidden');
+multiplayerPage.classList.add('hidden');
+casinoPage.classList.remove('hidden');
+document.body.classList.add('casino-mode');
+createCoinRain();
+window.scrollTo(0, 0);
+});
+
+backBtn.addEventListener('click', () => {
+multiplayerPage.classList.add('hidden');
+casinoPage.classList.add('hidden');
+mainPage.classList.remove('hidden');
+document.body.classList.remove('casino-mode');
+window.scrollTo(0, 0);
+});
+
+backBtnCasino.addEventListener('click', () => {
+multiplayerPage.classList.add('hidden');
+casinoPage.classList.add('hidden');
+mainPage.classList.remove('hidden');
+document.body.classList.remove('casino-mode');
+window.scrollTo(0, 0);
+});
+
+// Initial render
+renderGames(offlineGames, offlineGamesGrid, false);
+renderGames(onlineGames, onlineGamesGrid, false);
+renderGames(casinoGames, casinoGamesGrid, true);
+</script>
+</body>
+</html>
