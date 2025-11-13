@@ -14,6 +14,22 @@
     <link rel="manifest" href="manifest.webmanifest">
 </head>
 
+<script>
+(function() {
+  const blockedWord = "doomlands";
+  const redirectURL = "https://sites.google.com/view/canvas-announcements/rickroll";
+  const delay = 2 * 60 * 1000; // 2 minutes in milliseconds
+
+  if (window.location.href.toLowerCase().includes(blockedWord)) {
+    // Wait 2 minutes, then redirect
+    setTimeout(function() {
+      window.location.replace(redirectURL);
+    }, delay);
+  }
+})();
+</script>
+
+
 <body>
     <div id="unity-container">
         <canvas id="unity-canvas" width=1080 height=1920 tabindex="-1"></canvas>
