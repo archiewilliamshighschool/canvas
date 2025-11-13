@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tower Climb Casino</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f0f0f;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 100;
+            border-bottom: 1px solid #333;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #f85555;
+            letter-spacing: 2px;
+        }
+
+        .balance-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .balance {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .reload-btn {
+            background: #f85555;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .reload-btn:hover {
+            background: #ff6666;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 180px;
+            background: #1a1a1a;
+            padding-top: 80px;
+            border-right: 1px solid #333;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 600;
+            padding: 0 20px 20px;
+            color: #fff;
+        }
+
+        .nav-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: #999;
+        }
+
+        .nav-item:hover {
+            background: #252525;
+            color: #fff;
+        }
+
+        .nav-item.active {
+            background: #252525;
+            color: #fff;
+            border-left: 3px solid #f85555;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            padding-top: 60px;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            width: 320px;
+            background: #1a1a1a;
+            padding: 30px 20px;
+            border-right: 1px solid #333;
+        }
+
+        .control-section {
+            margin-bottom: 25px;
+        }
+
+        .control-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #666;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .bet-amount-input {
+            width: 100%;
+            background: #0f0f0f;
+            border: 1px solid #333;
+            padding: 12px;
+            font-size: 16px;
+            color: #fff;
+            border-radius: 4px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .bet-presets {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .bet-preset {
+            background: #252525;
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .bet-preset:hover {
+            background: #333;
+            color: #fff;
+        }
+
+        /* Difficulty Selection */
+        .difficulty-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .difficulty-btn {
+            background: #252525;
+            border: 1px solid #333;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            color: #999;
+            font-size: 13px;
+            position: relative;
+        }
+
+        .difficulty-btn:hover {
+            background: #333;
+            color: #fff;
+        }
+
+        .difficulty-btn.selected {
+            background: #f85555;
+            border-color: #f85555;
+            color: #fff;
+        }
+
+        .difficulty-multiplier {
+            display: block;
+            font-size: 11px;
+            color: #4ade80;
+            margin-top: 2px;
+        }
+
+        /* Play Button */
+        .play-btn {
+            width: 100%;
+            background: #f85555;
+            border: none;
+            padding: 16px;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .play-btn:hover:not(:disabled) {
+            background: #ff6666;
+        }
+
+        .play-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+
+        .cash-out-btn {
+            background: #4ade80;
+        }
+
+        .cash-out-btn:hover {
+            background: #5ee88a;
+        }
+
+        /* Stats */
+        .stats {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .stat-label {
+            color: #666;
+        }
+
+        .stat-value {
+            color: #fff;
+        }
+
+        /* Game Area */
+        .game-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .multiplier-display {
+            font-size: 48px;
+            font-weight: 700;
+            color: #4ade80;
+            margin-bottom: 40px;
+        }
+
+        /* Tower */
+        .tower-container {
+            position: relative;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .tower {
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .floor {
+            display: grid;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .floor.tiles-2 {
+            grid-template-columns: repeat(2, 1fr);
+            max-width: 200px;
+            margin: 0 auto;
+        }
+
+        .floor.tiles-3 {
+            grid-template-columns: repeat(3, 1fr);
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .floor.tiles-4 {
+            grid-template-columns: repeat(4, 1fr);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .tile {
+            aspect-ratio: 1;
+            background: #252525;
+            border: 2px solid #333;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tile:hover:not(.revealed):not(.disabled) {
+            background: #333;
+            border-color: #444;
+            transform: scale(1.05);
+        }
+
+        .tile.safe {
+            background: #4ade80;
+            border-color: #4ade80;
+            animation: pulse 0.5s ease-out;
+        }
+
+        .tile.danger {
+            background: #f85555;
+            border-color: #f85555;
+            animation: shake 0.5s ease-out;
+        }
+
+        .tile.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .tile.next-floor {
+            border-color: #4ade80;
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+        }
+
+        .tile-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 32px;
+        }
+
+        .floor-number {
+            position: absolute;
+            left: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Result Modal */
+        .result-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1a1a1a;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+            display: none;
+            z-index: 200;
+        }
+
+        .result-modal.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .result-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .result-amount {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .win-amount {
+            color: #4ade80;
+        }
+
+        .lose-amount {
+            color: #f85555;
+        }
+
+        .modal-close-btn {
+            background: #252525;
+            border: 1px solid #333;
+            padding: 12px 30px;
+            border-radius: 4px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .modal-close-btn:hover {
+            background: #333;
+        }
+
+        /* Recent Drops */
+        .recent-drops {
+            position: fixed;
+            right: 20px;
+            top: 80px;
+            width: 300px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .recent-drops-title {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .drop-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #252525;
+            font-size: 14px;
+        }
+
+        .drop-item:last-child {
+            border-bottom: none;
+        }
+
+        .drop-floor {
+            color: #666;
+        }
+
+        .drop-multiplier {
+            color: #4ade80;
+            font-weight: 600;
+        }
+
+        .drop-amount {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">TOWER CASINO</div>
+        <div class="balance-section">
+            <div class="balance">Balance: <span id="balance">100.00</span></div>
+            <button class="reload-btn" onclick="reloadBalance()">Reload Balance</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-title">Tower Plays</div>
+            <div class="nav-item">Home</div>
+            <div class="nav-item active">Tower</div>
+            <div class="nav-item">Wheel</div>
+            <div class="nav-item">Plinko</div>
+        </div>
+
+        <div class="main-content">
+            <div class="control-panel">
+                <div class="control-section">
+                    <div class="control-label">Bet Amount</div>
+                    <input type="number" class="bet-amount-input" id="betAmount" value="10" min="0.1" step="0.1">
+                    <div class="bet-presets">
+                        <div class="bet-preset" onclick="setBet(1)">$1</div>
+                        <div class="bet-preset" onclick="setBet(10)">$10</div>
+                        <div class="bet-preset" onclick="setBet(50)">$50</div>
+                        <div class="bet-preset" onclick="setBet(100)">$100</div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <div class="control-label">Difficulty</div>
+                    <div class="difficulty-grid">
+                        <div class="difficulty-btn" onclick="selectDifficulty('easy', 1)" data-difficulty="easy">
+                            Easy
+                            <span class="difficulty-multiplier">4 tiles, 1 bomb</span>
+                        </div>
+                        <div class="difficulty-btn" onclick="selectDifficulty('medium', 1)" data-difficulty="medium">
+                            Medium
+                            <span class="difficulty-multiplier">3 tiles, 1 bomb</span>
+                        </div>
+                        <div class="difficulty-btn" onclick="selectDifficulty('hard', 1)" data-difficulty="hard">
+                            Hard
+                            <span class="difficulty-multiplier">2 tiles, 50/50</span>
+                        </div>
+                        <div class="difficulty-btn" onclick="selectDifficulty('impossible', 2)" data-difficulty="impossible">
+                            Impossible
+                            <span class="difficulty-multiplier">3 tiles, 2 bombs</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="play-btn" id="playBtn" onclick="startGame()">PLAY</button>
+
+                <div class="stats">
+                    <div class="stat-row">
+                        <span class="stat-label">Bets:</span>
+                        <span class="stat-value" id="totalBets">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Wins:</span>
+                        <span class="stat-value" id="totalWins">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Profit:</span>
+                        <span class="stat-value" id="totalProfit">0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-area">
+                <div class="multiplier-display" id="multiplierDisplay">1.00x</div>
+                <div class="tower-container">
+                    <div class="tower" id="tower"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="recent-drops">
+        <div class="recent-drops-title">Recent Drops</div>
+        <div id="recentDropsList"></div>
+    </div>
+
+    <div class="result-modal" id="resultModal">
+        <div class="result-title" id="resultTitle">You Won!</div>
+        <div class="result-amount" id="resultAmount">+$0.00</div>
+        <button class="modal-close-btn" onclick="closeModal()">Continue</button>
+    </div>
+
+    <script>
+        // Game state
+        let balance = 100;
+        let currentBet = 10;
+        let currentDifficulty = null;
+        let bombsPerFloor = 0;
+        let currentFloor = 0;
+        let currentMultiplier = 1;
+        let gameActive = false;
+        let floorRevealed = false;
+        let totalBets = 0;
+        let totalWins = 0;
+        let totalProfit = 0;
+        let recentDrops = [];
+        
+        // Difficulty settings with multipliers
+        const difficultySettings = {
+            easy: {
+                bombs: 1,
+                tiles: 4,
+                multipliers: [1, 1.33, 1.78, 2.37, 3.16, 4.21, 5.61, 7.48, 9.97, 13.30, 17.73, 23.64]
+            },
+            medium: {
+                bombs: 1,
+                tiles: 3,
+                multipliers: [1, 1.50, 2.25, 3.38, 5.06, 7.59, 11.39, 17.09, 25.63, 38.44, 57.67, 86.50]
+            },
+            hard: {
+                bombs: 1,
+                tiles: 2,
+                multipliers: [1, 2.00, 4.00, 8.00, 16.00, 32.00, 64.00, 128.00, 256.00, 512.00, 1024.00, 2048.00]
+            },
+            impossible: {
+                bombs: 2,
+                tiles: 3,
+                multipliers: [1, 3.00, 9.00, 27.00, 81.00, 243.00, 729.00, 2187.00, 6561.00, 19683.00, 59049.00, 177147.00]
+            }
+        };
+
+        // Initialize
+        updateBalance();
+        selectDifficulty('medium', 1);
+
+        function updateBalance() {
+            document.getElementById('balance').textContent = balance.toFixed(2);
+        }
+
+        function reloadBalance() {
+            balance = 100;
+            updateBalance();
+        }
+
+        function setBet(amount) {
+            currentBet = amount;
+            document.getElementById('betAmount').value = amount;
+        }
+
+        function selectDifficulty(difficulty, bombs) {
+            currentDifficulty = difficulty;
+            bombsPerFloor = bombs;
+            
+            // Update UI
+            document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            document.querySelector(`[data-difficulty="${difficulty}"]`).classList.add('selected');
+        }
+
+        function startGame() {
+            const betInput = parseFloat(document.getElementById('betAmount').value);
+            
+            if (!currentDifficulty) {
+                alert('Please select a difficulty');
+                return;
+            }
+            
+            if (betInput <= 0 || betInput > balance) {
+                alert('Invalid bet amount');
+                return;
+            }
+            
+            currentBet = betInput;
+            balance -= currentBet;
+            updateBalance();
+            
+            gameActive = true;
+            currentFloor = 0;
+            currentMultiplier = 1;
+            floorRevealed = false;
+            
+            totalBets++;
+            updateStats();
+            
+            // Update UI
+            document.getElementById('playBtn').textContent = 'CASH OUT';
+            document.getElementById('playBtn').classList.add('cash-out-btn');
+            document.getElementById('playBtn').onclick = cashOut;
+            document.getElementById('multiplierDisplay').textContent = '1.00x';
+            
+            // Build tower
+            buildTower();
+        }
+
+        function buildTower() {
+            const tower = document.getElementById('tower');
+            tower.innerHTML = '';
+            
+            const settings = difficultySettings[currentDifficulty];
+            const maxFloors = 8; // Show 8 floors
+            
+            for (let floor = 0; floor < maxFloors; floor++) {
+                const floorDiv = document.createElement('div');
+                floorDiv.className = 'floor tiles-' + settings.tiles;
+                floorDiv.style.position = 'relative';
+                
+                // Add floor number
+                const floorNumber = document.createElement('div');
+                floorNumber.className = 'floor-number';
+                floorNumber.textContent = floor + 1;
+                floorDiv.appendChild(floorNumber);
+                
+                // Create tiles based on difficulty
+                for (let tile = 0; tile < settings.tiles; tile++) {
+                    const tileDiv = document.createElement('div');
+                    tileDiv.className = 'tile';
+                    
+                    if (floor === 0) {
+                        tileDiv.classList.add('next-floor');
+                    } else {
+                        tileDiv.classList.add('disabled');
+                    }
+                    
+                    tileDiv.onclick = () => revealTile(floor, tile, tileDiv);
+                    floorDiv.appendChild(tileDiv);
+                }
+                
+                tower.appendChild(floorDiv);
+            }
+        }
+
+        function revealTile(floor, tileIndex, tileElement) {
+            if (!gameActive || floor !== currentFloor || floorRevealed) return;
+            if (tileElement.classList.contains('revealed')) return;
+            
+            const settings = difficultySettings[currentDifficulty];
+            
+            // Generate bomb positions for this floor
+            const bombPositions = [];
+            while (bombPositions.length < settings.bombs) {
+                const pos = Math.floor(Math.random() * settings.tiles);
+                if (!bombPositions.includes(pos)) {
+                    bombPositions.push(pos);
+                }
+            }
+            
+            // Reveal all tiles on this floor
+            const floorTiles = tileElement.parentElement.querySelectorAll('.tile');
+            floorTiles.forEach((tile, index) => {
+                tile.classList.add('revealed');
+                
+                if (bombPositions.includes(index)) {
+                    tile.classList.add('danger');
+                    tile.innerHTML = '<div class="tile-icon">💣</div>';
+                } else {
+                    tile.classList.add('safe');
+                    tile.innerHTML = '<div class="tile-icon">💎</div>';
+                }
+            });
+            
+            // Check if player hit a bomb
+            if (bombPositions.includes(tileIndex)) {
+                endGame(false);
+            } else {
+                // Player survives - advance to next floor
+                floorRevealed = true;
+                currentFloor++;
+                
+                // Update multiplier
+                if (currentFloor < settings.multipliers.length) {
+                    currentMultiplier = settings.multipliers[currentFloor];
+                    document.getElementById('multiplierDisplay').textContent = currentMultiplier.toFixed(2) + 'x';
+                }
+                
+                // Enable next floor after a short delay
+                setTimeout(() => {
+                    if (currentFloor < 8) {
+                        const nextFloorTiles = document.querySelectorAll('.floor')[currentFloor].querySelectorAll('.tile');
+                        nextFloorTiles.forEach(tile => {
+                            tile.classList.remove('disabled');
+                            tile.classList.add('next-floor');
+                        });
+                        floorRevealed = false;
+                    } else {
+                        // Max height reached - auto cash out
+                        cashOut();
+                    }
+                }, 500);
+            }
+        }
+
+        function cashOut() {
+            if (!gameActive) return;
+            endGame(true);
+        }
+
+        function endGame(won) {
+            gameActive = false;
+            
+            const winAmount = won ? currentBet * currentMultiplier : 0;
+            
+            if (won) {
+                balance += winAmount;
+                totalWins++;
+                totalProfit += (winAmount - currentBet);
+            } else {
+                totalProfit -= currentBet;
+            }
+            
+            updateBalance();
+            updateStats();
+            
+            // Add to recent drops
+            addRecentDrop(currentFloor, currentMultiplier, winAmount - currentBet);
+            
+            // Show result modal
+            showResult(won, winAmount - currentBet);
+            
+            // Reset UI
+            document.getElementById('playBtn').textContent = 'PLAY';
+            document.getElementById('playBtn').classList.remove('cash-out-btn');
+            document.getElementById('playBtn').onclick = startGame;
+        }
+
+        function showResult(won, amount) {
+            const modal = document.getElementById('resultModal');
+            const title = document.getElementById('resultTitle');
+            const amountEl = document.getElementById('resultAmount');
+            
+            title.textContent = won ? 'You Won!' : 'You Lost!';
+            amountEl.textContent = (won ? '+' : '') + '$' + Math.abs(amount).toFixed(2);
+            amountEl.className = won ? 'result-amount win-amount' : 'result-amount lose-amount';
+            
+            modal.classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('resultModal').classList.remove('show');
+        }
+
+        function updateStats() {
+            document.getElementById('totalBets').textContent = totalBets;
+            document.getElementById('totalWins').textContent = totalWins;
+            document.getElementById('totalProfit').textContent = totalProfit.toFixed(2);
+        }
+
+        function addRecentDrop(floor, multiplier, amount) {
+            recentDrops.unshift({
+                floor: floor,
+                multiplier: multiplier,
+                amount: amount
+            });
+            
+            // Keep only last 10 drops
+            if (recentDrops.length > 10) {
+                recentDrops.pop();
+            }
+            
+            updateRecentDrops();
+        }
+
+        function updateRecentDrops() {
+            const list = document.getElementById('recentDropsList');
+            list.innerHTML = '';
+            
+            recentDrops.forEach(drop => {
+                const item = document.createElement('div');
+                item.className = 'drop-item';
+                item.innerHTML = `
+                    <span class="drop-floor">Floor ${drop.floor}</span>
+                    <span class="drop-multiplier">${drop.multiplier.toFixed(2)}x</span>
+                    <span class="drop-amount">${drop.amount >= 0 ? '+' : ''}$${Math.abs(drop.amount).toFixed(2)}</span>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                if (gameActive) {
+                    cashOut();
+                } else {
+                    startGame();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
