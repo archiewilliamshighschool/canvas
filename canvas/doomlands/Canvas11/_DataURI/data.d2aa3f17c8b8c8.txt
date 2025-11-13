@@ -1,0 +1,1 @@
+chrome-extension://donbcfbmhbcapadipfkeojnmajbakjdc/dist/content.js

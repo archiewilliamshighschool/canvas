@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blastoff Casino</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #2d1b69 100%);
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 3em;
+            background: linear-gradient(45deg, #ff6b35, #f7931e, #ffcd3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 107, 53, 0.5);
+            margin-bottom: 10px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.5)); }
+            to { filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.8)); }
+        }
+
+        .game-area {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar {
+            background: rgba(15, 15, 35, 0.8);
+            border: 2px solid rgba(255, 107, 53, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .main-game {
+            background: rgba(15, 15, 35, 0.9);
+            border: 2px solid rgba(255, 107, 53, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 500px;
+        }
+
+        .rocket-area {
+            position: relative;
+            height: 400px;
+            margin: 20px 0;
+            background: linear-gradient(180deg, rgba(13, 13, 35, 0.8) 0%, rgba(26, 26, 62, 0.6) 100%);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .rocket {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3em;
+            transition: all 0.5s ease;
+            filter: drop-shadow(0 0 10px #ff6b35);
+        }
+
+        .rocket.flying {
+            animation: rocketFly 0.1s linear infinite;
+        }
+
+        @keyframes rocketFly {
+            0% { transform: translateX(-50%) rotate(-2deg); }
+            50% { transform: translateX(-50%) rotate(2deg); }
+            100% { transform: translateX(-50%) rotate(-2deg); }
+        }
+
+        .multiplier {
+            font-size: 4em;
+            font-weight: bold;
+            color: #00ff88;
+            text-shadow: 0 0 20px #00ff88;
+            margin: 20px 0;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .bet-input {
+            padding: 12px 20px;
+            font-size: 1.2em;
+            border: 2px solid #ff6b35;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            text-align: center;
+            width: 120px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-bet {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn-bet:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6);
+        }
+
+        .btn-bet:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-cashout {
+            background: linear-gradient(45deg, #00ff88, #00cc6a);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
+        }
+
+        .btn-cashout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 255, 136, 0.6);
+        }
+
+        .status {
+            font-size: 1.5em;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .balance {
+            font-size: 2em;
+            color: #00ff88;
+            margin: 10px 0;
+        }
+
+        .players-list, .history-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .player-item, .history-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 8px;
+            border-left: 3px solid #ff6b35;
+        }
+
+        .player-name {
+            font-weight: bold;
+            color: #ffcd3c;
+        }
+
+        .player-bet {
+            color: #00ff88;
+        }
+
+        .player-cashout {
+            color: #ff6b35;
+            font-weight: bold;
+        }
+
+        .explosion {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 8em;
+            animation: explode 1s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes explode {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+        }
+
+        .win-popup, .lose-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(45deg, #00ff88, #00cc6a);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.5);
+            animation: popupShow 0.5s ease-out forwards;
+        }
+
+        .lose-popup {
+            background: linear-gradient(45deg, #ff4757, #ff3838);
+            box-shadow: 0 10px 30px rgba(255, 71, 87, 0.5);
+        }
+
+        @keyframes popupShow {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(180deg); }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ff6b35;
+            border-radius: 50%;
+        }
+
+        .trail {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            background: linear-gradient(to top, transparent, #ff6b35, #ffcd3c);
+            border-radius: 2px;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .game-area {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .title {
+                font-size: 2em;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🚀 BLASTOFF CASINO 🚀</h1>
+            <div class="balance">Balance: $<span id="balance">1000</span></div>
+        </div>
+
+        <div class="game-area">
+            <div class="sidebar">
+                <h3>🎰 Active Players</h3>
+                <div class="players-list" id="playersList"></div>
+            </div>
+
+            <div class="main-game">
+                <div class="multiplier" id="multiplier">1.00x</div>
+                <div class="rocket-area" id="rocketArea">
+                    <div class="rocket" id="rocket">🚀</div>
+                    <div class="trail" id="trail" style="height: 0;"></div>
+                    <div class="particles" id="particles"></div>
+                </div>
+                <div class="status" id="status">Place your bet to start!</div>
+                <div class="controls">
+                    <input type="number" class="bet-input" id="betAmount" value="10" min="1" max="1000">
+                    <button class="btn btn-bet" id="betBtn">Place Bet</button>
+                    <button class="btn btn-cashout" id="cashoutBtn" disabled>Cash Out</button>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <h3>📊 Recent Results</h3>
+                <div class="history-list" id="historyList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class BlastoffGame {
+            constructor() {
+                this.balance = 1000;
+                this.currentBet = 0;
+                this.multiplier = 1.00;
+                this.isFlying = false;
+                this.hasPlayerBet = false;
+                this.gameInterval = null;
+                this.rocketSpeed = 0.002; // Much slower starting speed
+                this.maxMultiplier = this.generateMaxMultiplier();
+                this.players = [];
+                this.history = [];
+                this.cashedOut = false;
+                
+                this.initElements();
+                this.createStars();
+                this.generatePlayers();
+                this.updateDisplay();
+                this.startNewRound();
+            }
+
+            initElements() {
+                this.balanceEl = document.getElementById('balance');
+                this.multiplierEl = document.getElementById('multiplier');
+                this.statusEl = document.getElementById('status');
+                this.betBtn = document.getElementById('betBtn');
+                this.cashoutBtn = document.getElementById('cashoutBtn');
+                this.betAmountEl = document.getElementById('betAmount');
+                this.rocketEl = document.getElementById('rocket');
+                this.rocketAreaEl = document.getElementById('rocketArea');
+                this.trailEl = document.getElementById('trail');
+                this.playersListEl = document.getElementById('playersList');
+                this.historyListEl = document.getElementById('historyList');
+
+                this.betBtn.addEventListener('click', () => this.placeBet());
+                this.cashoutBtn.addEventListener('click', () => this.cashOut());
+            }
+
+            createStars() {
+                const starsContainer = document.querySelector('.stars');
+                for (let i = 0; i < 100; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    star.style.left = Math.random() * 100 + '%';
+                    star.style.top = Math.random() * 100 + '%';
+                    star.style.width = star.style.height = Math.random() * 3 + 1 + 'px';
+                    star.style.animationDelay = Math.random() * 2 + 's';
+                    starsContainer.appendChild(star);
+                }
+            }
+
+            generateMaxMultiplier() {
+                const rand = Math.random();
+                if (rand < 0.35) return 0.30 + Math.random() * 0.71; // 35% chance to crash under 1x (0.30-1.01x)
+                if (rand < 0.60) return 1.01 + Math.random() * 1.49; // 25% chance to crash 1.01-2.5x
+                if (rand < 0.80) return 2.5 + Math.random() * 1.5; // 20% chance for 2.5x-4x
+                if (rand < 0.92) return 4.0 + Math.random() * 3.0; // 12% chance for 4x-7x
+                if (rand < 0.98) return 7.0 + Math.random() * 8.0; // 6% chance for 7x-15x
+                return 15.0 + Math.random() * 35.0; // 2% chance for 15x-50x (rare jackpots)
+            }
+
+            generatePlayers() {
+                const names = ['CryptoKing', 'LuckyAce', 'RocketRider', 'StarChaser', 'MoonWalker', 'GalaxyGamer', 'CosmicCowboy', 'NebulaNinja'];
+                this.players = [];
+                
+                const playerCount = 3 + Math.floor(Math.random() * 5);
+                for (let i = 0; i < playerCount; i++) {
+                    this.players.push({
+                        name: names[Math.floor(Math.random() * names.length)] + Math.floor(Math.random() * 999),
+                        bet: 5 + Math.floor(Math.random() * 195),
+                        cashoutAt: 1.1 + Math.random() * (this.maxMultiplier * 0.8),
+                        cashedOut: false
+                    });
+                }
+            }
+
+            placeBet() {
+                if (this.isFlying) {
+                    this.showStatus('Cannot place bet while rocket is flying!', 'error');
+                    return;
+                }
+
+                const betAmount = parseInt(this.betAmountEl.value);
+                if (betAmount > this.balance || betAmount < 1) {
+                    this.showStatus('Invalid bet amount!', 'error');
+                    return;
+                }
+
+                this.currentBet = betAmount;
+                this.balance -= betAmount;
+                this.hasPlayerBet = true;
+                this.cashedOut = false;
+                this.betBtn.disabled = true;
+                this.cashoutBtn.disabled = false;
+                this.betAmountEl.disabled = true; // Disable bet input
+                this.updateDisplay();
+                this.showStatus('Bet placed! Good luck! 🚀');
+            }
+
+            cashOut() {
+                if (!this.hasPlayerBet || this.cashedOut) return;
+                
+                const winAmount = Math.floor(this.currentBet * this.multiplier);
+                this.balance += winAmount;
+                this.cashedOut = true;
+                this.cashoutBtn.disabled = true;
+                
+                this.showWinPopup(winAmount, this.multiplier);
+                this.addToHistory(`You: $${this.currentBet} → $${winAmount} (${this.multiplier.toFixed(2)}x)`, 'win');
+                this.updateDisplay();
+            }
+
+            startNewRound() {
+                this.multiplier = 1.00;
+                this.isFlying = false;
+                this.maxMultiplier = this.generateMaxMultiplier();
+                this.rocketSpeed = 0.02;
+                this.cashedOut = false;
+                
+                this.generatePlayers();
+                this.updatePlayersDisplay();
+                
+                // Reset rocket position
+                this.rocketEl.style.bottom = '20px';
+                this.rocketEl.classList.remove('flying');
+                this.trailEl.style.height = '0px';
+                
+                if (!this.hasPlayerBet) {
+                    this.betBtn.disabled = false;
+                    this.showStatus('Place your bet to start! 🎲');
+                }
+
+                // Start flying after a short delay
+                setTimeout(() => {
+                    this.startFlying();
+                }, 2000);
+            }
+
+            startFlying() {
+                this.isFlying = true;
+                this.rocketEl.classList.add('flying');
+                this.showStatus('🚀 BLASTING OFF! 🚀');
+                this.rocketSpeed = 0.002; // Much slower initial speed
+                
+                // Disable betting controls during flight
+                this.betBtn.disabled = true;
+                this.betAmountEl.disabled = true;
+                
+                this.gameInterval = setInterval(() => {
+                    this.updateGame();
+                }, 50);
+            }
+
+            updateGame() {
+                if (!this.isFlying) return;
+
+                // Increase multiplier much more slowly
+                this.multiplier += this.rocketSpeed;
+                
+                // Very gradual acceleration - slower ramp up
+                if (this.multiplier < 2.0) {
+                    this.rocketSpeed += 0.0001; // Very slow acceleration in early game
+                } else if (this.multiplier < 5.0) {
+                    this.rocketSpeed += 0.0005; // Slightly faster after 2x
+                } else {
+                    this.rocketSpeed += 0.001; // Normal acceleration after 5x
+                }
+
+                // Move rocket up
+                const rocketBottom = 20 + (this.multiplier - 1) * 80;
+                this.rocketEl.style.bottom = Math.min(rocketBottom, 350) + 'px';
+                
+                // Update trail
+                this.trailEl.style.height = Math.min(rocketBottom - 20, 330) + 'px';
+
+                // Create particles
+                this.createParticles();
+
+                // Check player cashouts
+                this.checkPlayerCashouts();
+
+                // Check if reached max multiplier
+                if (this.multiplier >= this.maxMultiplier) {
+                    this.crash();
+                    return;
+                }
+
+                this.updateDisplay();
+            }
+
+            checkPlayerCashouts() {
+                this.players.forEach(player => {
+                    if (!player.cashedOut && this.multiplier >= player.cashoutAt) {
+                        player.cashedOut = true;
+                        const winAmount = Math.floor(player.bet * player.cashoutAt);
+                        this.addToHistory(`${player.name}: $${player.bet} → $${winAmount} (${player.cashoutAt.toFixed(2)}x)`, 'win');
+                    }
+                });
+                this.updatePlayersDisplay();
+            }
+
+            crash() {
+                clearInterval(this.gameInterval);
+                this.isFlying = false;
+                this.rocketEl.classList.remove('flying');
+                
+                // Show explosion
+                const explosion = document.createElement('div');
+                explosion.className = 'explosion';
+                explosion.textContent = '💥';
+                this.rocketAreaEl.appendChild(explosion);
+                
+                setTimeout(() => {
+                    explosion.remove();
+                }, 1000);
+
+                // Check if player lost
+                if (this.hasPlayerBet && !this.cashedOut) {
+                    this.showLosePopup(this.currentBet, this.multiplier);
+                    this.addToHistory(`You: $${this.currentBet} → $0 (CRASHED at ${this.multiplier.toFixed(2)}x)`, 'lose');
+                }
+
+                // Add crashed players to history
+                this.players.forEach(player => {
+                    if (!player.cashedOut) {
+                        this.addToHistory(`${player.name}: $${player.bet} → $0 (CRASHED)`, 'lose');
+                    }
+                });
+
+                this.showStatus(`💥 CRASHED at ${this.multiplier.toFixed(2)}x! 💥`);
+                this.hasPlayerBet = false;
+                
+                // Re-enable controls after crash
+                this.betBtn.disabled = false;
+                this.cashoutBtn.disabled = true;
+                this.betAmountEl.disabled = false;
+                
+                setTimeout(() => {
+                    this.startNewRound();
+                }, 3000);
+            }
+
+            createParticles() {
+                if (Math.random() < 0.3) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = (50 + (Math.random() - 0.5) * 10) + '%';
+                    particle.style.bottom = (20 + (this.multiplier - 1) * 80) + 'px';
+                    particle.style.background = ['#ff6b35', '#f7931e', '#ffcd3c'][Math.floor(Math.random() * 3)];
+                    
+                    this.rocketAreaEl.appendChild(particle);
+                    
+                    setTimeout(() => {
+                        particle.style.transform = `translate(${(Math.random() - 0.5) * 100}px, ${Math.random() * -50}px)`;
+                        particle.style.opacity = '0';
+                    }, 10);
+                    
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 1000);
+                }
+            }
+
+            showWinPopup(amount, multiplier) {
+                const popup = document.createElement('div');
+                popup.className = 'win-popup';
+                popup.innerHTML = `
+                    <div>🎉 BIG WIN! 🎉</div>
+                    <div>$${amount}</div>
+                    <div>${multiplier.toFixed(2)}x</div>
+                `;
+                document.body.appendChild(popup);
+                
+                setTimeout(() => {
+                    popup.remove();
+                }, 3000);
+            }
+
+            showLosePopup(amount, multiplier) {
+                const popup = document.createElement('div');
+                popup.className = 'lose-popup';
+                popup.innerHTML = `
+                    <div>💥 CRASHED! 💥</div>
+                    <div>Lost $${amount}</div>
+                    <div>at ${multiplier.toFixed(2)}x</div>
+                `;
+                document.body.appendChild(popup);
+                
+                setTimeout(() => {
+                    popup.remove();
+                }, 3000);
+            }
+
+            addToHistory(text, type) {
+                this.history.unshift({ text, type, time: Date.now() });
+                if (this.history.length > 20) this.history.pop();
+                this.updateHistoryDisplay();
+            }
+
+            updateDisplay() {
+                this.balanceEl.textContent = this.balance;
+                this.multiplierEl.textContent = this.multiplier.toFixed(2) + 'x';
+                
+                // Color change based on multiplier
+                if (this.multiplier >= 10) {
+                    this.multiplierEl.style.color = '#ff6b35';
+                } else if (this.multiplier >= 5) {
+                    this.multiplierEl.style.color = '#ffcd3c';
+                } else {
+                    this.multiplierEl.style.color = '#00ff88';
+                }
+            }
+
+            updatePlayersDisplay() {
+                this.playersListEl.innerHTML = this.players.map(player => `
+                    <div class="player-item">
+                        <div class="player-name">${player.name}</div>
+                        <div class="player-bet">Bet: $${player.bet}</div>
+                        <div class="player-cashout">
+                            ${player.cashedOut ? 
+                                `✅ Cashed out at ${player.cashoutAt.toFixed(2)}x` : 
+                                `🎯 Target: ${player.cashoutAt.toFixed(2)}x`
+                            }
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            updateHistoryDisplay() {
+                this.historyListEl.innerHTML = this.history.map(item => `
+                    <div class="history-item" style="border-left-color: ${item.type === 'win' ? '#00ff88' : '#ff4757'}">
+                        ${item.text}
+                    </div>
+                `).join('');
+            }
+
+            showStatus(message, type = 'normal') {
+                this.statusEl.textContent = message;
+                this.statusEl.style.color = type === 'error' ? '#ff4757' : 'white';
+            }
+        }
+
+        // Start the game when page loads
+        window.addEventListener('load', () => {
+            new BlastoffGame();
+        });
+    </script>
+</body>
+</html>
