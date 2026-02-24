@@ -1,0 +1,17 @@
+/* First, reset default body margin and padding to remove any white space */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+/* Style the embed element to fill the full viewport */
+.full-screen-embed {
+  position: fixed; /* Position relative to the browser window */
+  top: 0;
+  left: 0;
+  width: 100vw;   /* 100% of the viewport width */
+  height: 100vh;  /* 100% of the viewport height */
+  border: none;   /* Removes the default border */
+}
